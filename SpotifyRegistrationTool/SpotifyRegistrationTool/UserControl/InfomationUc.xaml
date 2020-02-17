@@ -8,27 +8,34 @@
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="1024" Background="#FFE9EBEE"   >
     <Grid >
-       
+
         <Grid Margin="15">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" FontWeight="Bold" FontSize="13">Proxy:</Label>
-            <TextBox Name="textboxProxy" Grid.Row="0" Grid.Column="1" AcceptsReturn="True" Margin="0,0,0,10" FontSize="12"  />
-            <Label Grid.Row="1" FontWeight="Bold" FontSize="13">Card Contact:</Label>
-            <TextBox Name="textboxCardContact" Grid.Row="1" Grid.Column="1" AcceptsReturn="True" Margin="0,0,0,10" FontSize="12"   />
-            <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Label Grid.Row="0" FontWeight="Bold" FontSize="13">Proxy Type:</Label>
+            <ComboBox Name="cbbProxyType" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                <ComboBoxItem Name="Http">Http</ComboBoxItem>
+                <ComboBoxItem Name="Socks4">Socks4</ComboBoxItem>
+                <ComboBoxItem IsSelected="True" Name="Socks5">Socks5</ComboBoxItem>
+            </ComboBox>
+            <Label Grid.Row="1" FontWeight="Bold" FontSize="13">Proxy:</Label>
+            <TextBox Name="textboxProxy" Grid.Row="1" Grid.Column="1" AcceptsReturn="True" Margin="0,0,0,10" FontSize="12"  />
+            <Label Grid.Row="2" FontWeight="Bold" FontSize="13">Card Contact:</Label>
+            <TextBox Name="textboxCardContact" Grid.Row="2" Grid.Column="1" AcceptsReturn="True" Margin="0,0,0,10" FontSize="12"   />
+            <StackPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button Name="btnClear"  Style="{StaticResource ApplicationButton}" Content="Clear" Width="150"  Height="30" FontSize="14" Background="#117a8b" Foreground="White" Cursor="Hand" Click="btnClear_Click"></Button>
                 <Button Name="btnGenerateAccount"  Style="{StaticResource ApplicationButton}" Content="Generate Account" Width="150" Height="30" Margin="10,0,0,0"  FontSize="14" Background="#FF007BFF" Foreground="White" Cursor="Hand" BorderBrush="#FF007BFF" Click="btnGenerateAccount_Click"  />
             </StackPanel>
         </Grid>
-       
+
     </Grid>
-    
+
 </UserControl>

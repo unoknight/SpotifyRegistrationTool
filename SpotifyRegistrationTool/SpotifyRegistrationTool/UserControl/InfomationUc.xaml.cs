@@ -1,4 +1,5 @@
-﻿using SpotifyRegistrationTool.Helpers;
+﻿using SpotifyRegistrationTool.Enums;
+using SpotifyRegistrationTool.Helpers;
 using SpotifyRegistrationTool.Logic;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,13 @@ namespace SpotifyRegistrationTool.UserControls
             }
 
             mainWindow.Proxies = StringHelper.GetLinesCollectionFromTextBox(textboxProxy);
+            //mainWindow.ProxyType = 
+            ProxyTypeEnum proxyType;
+            if (!Enum.TryParse(cbbProxyType.SelectedItem.ToString(), out proxyType))
+            {
+                proxyType = ProxyTypeEnum.Socks5;
+            }
+            mainWindow.ProxyType = proxyType;
 
             mainWindow.LoadingPage(true);
             mainWindow.LoadPage(mainWindow._accountManagerUc);

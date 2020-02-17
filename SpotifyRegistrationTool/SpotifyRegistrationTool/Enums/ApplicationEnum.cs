@@ -17,4 +17,11 @@ namespace SpotifyRegistrationTool.Enums
         False,
         Success
     }
+
+    public enum ProxyTypeEnum
+    {
+        Socks5,
+        Socks4,
+        Http
+    }
 }

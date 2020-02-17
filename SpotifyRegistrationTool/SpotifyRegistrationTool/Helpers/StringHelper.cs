@@ -1,5 +1,6 @@
 ﻿using RandomNameGeneratorLibrary;
 using SpotifyRegistrationTool.Enums;
+using SpotifyRegistrationTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +12,7 @@ namespace SpotifyRegistrationTool.Helpers
 {
     public static class StringHelper
     {
-        public static string GetRandomPassword(int length)
+        public static string GetRandomPassword(int minLength, int maxLength)
         {
             StringBuilder password = new StringBuilder();
             Random random = new Random();
@@ -20,6 +21,8 @@ namespace SpotifyRegistrationTool.Helpers
             bool nonAlphanumeric = true;
             bool lowercase = true;
             bool uppercase = true;
+
+            int length = random.Next(minLength, maxLength);
 
             while (password.Length < length)
             {
@@ -108,5 +111,34 @@ namespace SpotifyRegistrationTool.Helpers
 
             return lines;
         }
+
+        public static CardInfoModel GetCardInfo(string cardInfo)
+        {
+            var arrStr = cardInfo.Split('|');
+
+            CardInfoModel result = new CardInfoModel()
+            {
+                CardNumber = arrStr[0],
+                ExpiryMonth = arrStr[1],
+                ExpiryYear = arrStr[2],
+                SecurityCode = arrStr[3],
+                ZipCode = arrStr[4]
+            };
+            return result;
+        }
+
+        public static List<string> StringCollectionToList(this StringCollection collection)
+        {
+            List<string> result = new List<string>();
+
+            foreach (var item in collection)
+            {
+                result.Add(item);
+            }
+
+            return result;
+        }
+
+        
     }
 }

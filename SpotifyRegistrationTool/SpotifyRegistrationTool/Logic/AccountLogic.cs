@@ -15,11 +15,12 @@ namespace SpotifyRegistrationTool.Logic
 
             foreach (var card in cardsContact)
             {
-                if (!string.IsNullOrEmpty(card)&&card!="\r\n"&&card!="\n") {
+                if (!string.IsNullOrEmpty(card) && card != "\r\n" && card != "\n")
+                {
                     accounts.Add(GenerateAccount(card));
                 }
             }
-            
+
             return accounts;
         }
 
@@ -32,10 +33,14 @@ namespace SpotifyRegistrationTool.Logic
                 CardContact = cardContact,
                 Gender = PersonHelper.GetRandomGender(),
                 Email = StringHelper.RandomEmail() + Common.EMAIL_DOMAINS.GetRandomElementFromStringArray(),
-                Status = Enums.AccountStatusEnum.None
+                Status = Enums.AccountStatusEnum.None,
+                Password = StringHelper.GetRandomPassword(9, 12),
+                _isRunning = false,
             };
             account.DisplayName = StringHelper.RandomDisplayName(account.Gender);
             return account;
         }
+
+       
     }
 }

@@ -14,6 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Extensions.Configuration;
+using SpotifyRegistrationTool.Logic;
+using SpotifyRegistrationTool.Models;
 using SpotifyRegistrationTool.UserControls;
 using SpotifyRegistrationTool.ViewModels;
 
@@ -30,9 +33,21 @@ namespace SpotifyRegistrationTool
         public List<Models.Account> Accounts { get; set; }
         public StringCollection Proxies { get; set; }
         public string OldCardContactValue { get; set; } = string.Empty;
+        public string[] UsingProxies { get; set; }
+        public Enums.ProxyTypeEnum ProxyType { get; set; }
+        public Models.Account CurrentAccountRunning;
 
-        public MainWindow()
+        public readonly IConfiguration _configuration;
+
+        public RegisterSettingModel RegisterSetting { get; set; }
+
+        public RegisterPremiumModel RegisterPremium { get; set; }
+
+        public string CapchaKey { get; set; }
+
+        public MainWindow(IConfiguration configuration)
         {
+            _configuration = configuration;
             InitializeComponent();
             _infomationUc = new InfomationUc();
             _accountManagerUc = new AccountManagerUc();
@@ -62,7 +77,15 @@ namespace SpotifyRegistrationTool
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //LoadingPage(true);
+            RegisterSetting = _configuration.GetSection("RegisterSetting").Get<RegisterSettingModel>();
+            RegisterPremium = _configuration.GetSection("PremiumCard").Get<RegisterPremiumModel>();
+            CapchaKey = _configuration.GetSection("CaptchaKey").Get<string>();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure exit program?", Common.APP_NAME, System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Question);
+            e.Cancel = messageBoxResult == MessageBoxResult.No;
         }
     }
 }
