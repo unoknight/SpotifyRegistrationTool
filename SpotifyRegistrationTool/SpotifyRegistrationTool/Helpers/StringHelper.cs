@@ -4,6 +4,7 @@ using SpotifyRegistrationTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Text;
 using System.Web;
 using System.Windows.Controls;
@@ -139,6 +140,11 @@ namespace SpotifyRegistrationTool.Helpers
             return result;
         }
 
-        
+        public static string GetContentJsonFile(string fileName)
+        {
+            var myJsonString = File.ReadAllText(fileName);
+            return myJsonString;
+        }
+
     }
 }

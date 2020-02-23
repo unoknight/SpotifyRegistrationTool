@@ -30,6 +30,8 @@ namespace SpotifyRegistrationTool.Models
 
         public string StatusDisplay { get { return Status.ToString(); } }
 
+        public string Address { get; set; }
+
         public bool _isRunning;
 
         public bool IsRunning {

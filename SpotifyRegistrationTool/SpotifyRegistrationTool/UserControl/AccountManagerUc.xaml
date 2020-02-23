@@ -16,7 +16,6 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <ListView Name="listviewAccounts" VirtualizingStackPanel.IsVirtualizing="False" SelectionChanged="listviewAccounts_SelectionChanged">
-
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="" Width="30">
@@ -39,9 +38,10 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Header="Email" Width="200" DisplayMemberBinding="{Binding Email}"  />
+                            <GridViewColumn Header="Email" Width="120" DisplayMemberBinding="{Binding Email}"  />
                             <GridViewColumn Header="Password" Width="120" DisplayMemberBinding="{Binding Password}"  />
-                            <GridViewColumn Header="Display Name" Width="199" DisplayMemberBinding="{Binding DisplayName}" />
+                            <GridViewColumn Header="Display Name" Width="120" DisplayMemberBinding="{Binding DisplayName}" />
+                            <GridViewColumn Header="Address" Width="120" DisplayMemberBinding="{Binding Address}" />
                             <GridViewColumn Header="Gender" Width="80" DisplayMemberBinding="{Binding GenderDisplay}" />
                             <GridViewColumn Header="Birth Date" Width="90" DisplayMemberBinding="{Binding BirthDateDisplay}">
                                 <GridViewColumn.CellTemplate>

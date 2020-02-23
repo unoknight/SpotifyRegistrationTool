@@ -88,7 +88,7 @@ namespace SpotifyRegistrationTool.Logic
         }
 
         [Obsolete]
-        public static IWebElement FindElementWait(this ChromeDriver driver, TagSettingModel tag)
+        public static IWebElement FindElementWait(this ChromeDriver driver, TagSettingModel tag,int seconds = 2)
         {
             try
             {
@@ -99,11 +99,11 @@ namespace SpotifyRegistrationTool.Logic
                     by = By.XPath(tag.Value);
                 }
 
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
                 IWebElement element = wait.Until(ExpectedConditions.ElementExists(by));
                 return element;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

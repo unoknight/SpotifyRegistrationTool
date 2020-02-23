@@ -147,19 +147,17 @@ namespace SpotifyRegistrationTool.UserControls
 
             RunningAccount(account.Guid);
 
-
-
             try
             {
                 var proxies = mainWindow.Proxies.StringCollectionToList();
                 _driver = DriverManager.StartDriver(proxyType: mainWindow.ProxyType, proxy: proxies.FirstOrDefault().Trim());
 
-                _driver.Navigate().GoToUrl("https://www.spotify.com/");
+                _driver.Navigate().GoToUrl(mainWindow.RegisterSetting.Url);
 
-                Registration(mainWindow, account);
-
-                RegistrationPremium(mainWindow, account);
-
+                if (Registration(mainWindow, account))
+                {
+                    RegistrationPremium(mainWindow, account);
+                }
                 _driver.Close();
             }
             catch (Exception ex)
@@ -175,9 +173,14 @@ namespace SpotifyRegistrationTool.UserControls
         void RegistrationPremium(MainWindow mainWindow, Models.Account account)
         {
             Random random = new Random();
-            //_driver.Navigate().GoToUrl(mainWindow.RegisterPremium.Url);
+            Thread.Sleep(random.Next(10000, 15000));
+
+            _driver.Navigate().GoToUrl(mainWindow.RegisterPremium.Url);
             var cardInfo = StringHelper.GetCardInfo(account.CardContact);
             Thread.Sleep(random.Next(10000, 15000));
+
+            _driver.SwitchTo().Frame(_driver.FindElementWait(mainWindow.RegisterPremium.IFrame, 10));
+            Thread.Sleep(random.Next(1000, 2000));
 
             var cardNumberElement = _driver.FindElementWait(mainWindow.RegisterPremium.CardNumber);
             _driver.FillTextToTextBox(cardNumberElement, cardInfo.CardNumber);
@@ -204,16 +207,17 @@ namespace SpotifyRegistrationTool.UserControls
             var submitElement = _driver.FindElementWait(mainWindow.RegisterPremium.ZipCode);
             _driver.ClickElement(submitElement);
 
-
+            Thread.Sleep(random.Next(10000, 15000));
         }
 
 
         [Obsolete]
-        void Registration(MainWindow mainWindow, Models.Account account)
+        bool Registration(MainWindow mainWindow, Models.Account account)
         {
             Random random = new Random();
+            Thread.Sleep(10000);
             _driver.Navigate().GoToUrl(mainWindow.RegisterSetting.Url);
-            Thread.Sleep(20000);
+
 
             var emailElement = _driver.FindElementWait(mainWindow.RegisterSetting.Email);
 
@@ -242,7 +246,7 @@ namespace SpotifyRegistrationTool.UserControls
             Thread.Sleep(random.Next(1000, 2000));
 
             var selectMonthElement = new SelectElement(dropdownMonthElement);
-            selectMonthElement.SelectByValue(account.BirthDate.Month.ToString());
+            selectMonthElement.SelectByValue(account.BirthDate.Month > 10 ? account.BirthDate.Month.ToString() : "0" + account.BirthDate.Month.ToString());
             Thread.Sleep(random.Next(1000, 2000));
 
             var yearElement = _driver.FindElementWait(mainWindow.RegisterSetting.Year);
@@ -287,23 +291,32 @@ namespace SpotifyRegistrationTool.UserControls
             {
                 string idToken = responseID.Split('|')[1];
                 var confirmTokenApi = string.Format(Common.GET_PASS_CAPTCHA_API, mainWindow.CapchaKey, idToken);
-                Thread.Sleep(60000);
+                Thread.Sleep(1000 * 60);
                 string responseToken = DriverManager.GetApi(confirmTokenApi);
+
+                if (string.IsNullOrEmpty(responseToken) || responseID == "CAPCHA_NOT_READY")
+                {
+                    Thread.Sleep(1000 * 60);
+                    responseToken = DriverManager.GetApi(confirmTokenApi);
+                }
+
                 if (!string.IsNullOrEmpty(responseToken))
                 {
-                    var arrToken = responseToken.Split('|');
-                    if (arrToken[0] == "OK")
+
+                    if (responseToken.Contains('|') && responseToken.Split('|')[0] == "OK")
                     {
+                        var arrToken = responseToken.Split('|');
                         string captchaTokenResult = arrToken[1];
                         IJavaScriptExecutor js = (IJavaScriptExecutor)_driver;
                         js.ExecuteScript($"document.getElementById('g-recaptcha-response').innerHTML='{captchaTokenResult}';");
                         Thread.Sleep(random.Next(1000, 2000));
                         _driver.ClickElement(submitElement);
                         Thread.Sleep(10000);
+                        return true;
                     }
                     else
                     {
-                        Thread.Sleep(5000);
+                        Thread.Sleep(1000 * 60);
                         string responseTokenSeconds = DriverManager.GetApi(confirmTokenApi);
                         var arrTokennew = responseTokenSeconds.Split('|');
                         if (arrTokennew[0] == "OK")
@@ -315,10 +328,12 @@ namespace SpotifyRegistrationTool.UserControls
                             Thread.Sleep(random.Next(1000, 2000));
                             _driver.ClickElement(submitElement);
                             Thread.Sleep(10000);
+                            return true;
                         }
                     }
                 }
             }
+            return false;
         }
 
         void ClearRunningAccount()
@@ -342,5 +357,7 @@ namespace SpotifyRegistrationTool.UserControls
         {
             cts.Cancel();
         }
+
+
     }
 }

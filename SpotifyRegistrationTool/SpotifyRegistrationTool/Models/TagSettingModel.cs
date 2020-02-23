@@ -27,6 +27,7 @@ namespace SpotifyRegistrationTool.Models
     public class RegisterPremiumModel
     {
         public string Url { get; set; }
+        public TagSettingModel IFrame { get; set; }
         public TagSettingModel CardNumber { get; set; }
         public TagSettingModel ExpiryMonth { get; set; }
         public TagSettingModel ExpiryYear { get; set; }

@@ -7,11 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="addresses-us-all.min.json" />
     <None Remove="background.png" />
     <None Remove="touch_icon_114_b5U_icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="addresses-us-all.min.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.1" />
@@ -19,11 +27,14 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="RandomNameGeneratorLibrary" Version="1.2.2" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="80.0.3987.10600" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="Z.Dapper.Plus" Version="3.0.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,12 +43,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="account.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="names.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Resources\" />
   </ItemGroup>
 
 </Project>

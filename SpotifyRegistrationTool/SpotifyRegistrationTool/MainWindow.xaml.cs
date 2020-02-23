@@ -15,6 +15,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Extensions.Configuration;
+using Nancy.Json;
+using Newtonsoft.Json;
+using SpotifyRegistrationTool._Data;
+using SpotifyRegistrationTool.Helpers;
 using SpotifyRegistrationTool.Logic;
 using SpotifyRegistrationTool.Models;
 using SpotifyRegistrationTool.UserControls;
@@ -45,6 +49,8 @@ namespace SpotifyRegistrationTool
 
         public string CapchaKey { get; set; }
 
+        public DataAccess _dataAccess;
+
         public MainWindow(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -52,6 +58,7 @@ namespace SpotifyRegistrationTool
             _infomationUc = new InfomationUc();
             _accountManagerUc = new AccountManagerUc();
             LoadPage(_infomationUc);
+            _dataAccess = new DataAccess();
         }
 
         public void LoadingPage(bool isLoading)
@@ -80,6 +87,12 @@ namespace SpotifyRegistrationTool
             RegisterSetting = _configuration.GetSection("RegisterSetting").Get<RegisterSettingModel>();
             RegisterPremium = _configuration.GetSection("PremiumCard").Get<RegisterPremiumModel>();
             CapchaKey = _configuration.GetSection("CaptchaKey").Get<string>();
+
+            var jsonFileAddress = StringHelper.GetContentJsonFile("addresses-us-all.min.json");
+            var jsonArray = new JsonDeserializer(jsonFileAddress);
+            Common.Addresses = JsonConvert.DeserializeObject<List<AddressInfo>>(jsonArray.GetObject("addresses").ToString());
+
+            var s = _dataAccess.GetListAccount();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

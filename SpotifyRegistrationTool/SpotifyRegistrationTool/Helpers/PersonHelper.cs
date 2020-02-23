@@ -1,4 +1,5 @@
 ﻿using SpotifyRegistrationTool.Enums;
+using SpotifyRegistrationTool.Logic;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,6 +25,17 @@ namespace SpotifyRegistrationTool.Helpers
 
             return GenderEnum.Female;
 
+        }
+
+        public static string GetRandomAddress()
+        {
+            if (Common.Addresses == null || Common.Addresses.Count == 0)
+            {
+                return string.Empty;
+            }
+            Random random = new Random();
+            int randomNumner = random.Next(0, Common.Addresses.Count - 1);
+            return Common.Addresses[randomNumner].Address1;
         }
     }
 }

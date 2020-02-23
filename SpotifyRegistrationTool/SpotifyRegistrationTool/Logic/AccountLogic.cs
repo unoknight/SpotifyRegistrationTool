@@ -36,6 +36,7 @@ namespace SpotifyRegistrationTool.Logic
                 Status = Enums.AccountStatusEnum.None,
                 Password = StringHelper.GetRandomPassword(9, 12),
                 _isRunning = false,
+                Address = PersonHelper.GetRandomAddress()
             };
             account.DisplayName = StringHelper.RandomDisplayName(account.Gender);
             return account;
